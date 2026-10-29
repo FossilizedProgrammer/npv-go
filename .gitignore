@@ -1,0 +1,4 @@
+# build output (go build -o npv ./cmd/npv-go)
+/npv
+/npv.exe
+/dist/
