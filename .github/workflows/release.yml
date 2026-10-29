@@ -123,6 +123,8 @@ jobs:
       - name: Publish
         env:
           GH_TOKEN: ${{ github.token }}
+          # این job مخزن را checkout نکرده، پس gh مخزن را از remote پیدا نمی‌کند.
+          GH_REPO: ${{ github.repository }}
         run: |
           gh release create "$GITHUB_REF_NAME" artifacts/* \
             --title "npv $GITHUB_REF_NAME" \
