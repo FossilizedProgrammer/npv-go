@@ -10,11 +10,28 @@
 هر نام دیگری کار می‌کند. در مثال‌های پایین `example.npvs` را با نام فایل خودتان
 جایگزین کنید.
 
+## باینری آماده
+
+از صفحه‌ی [Releases](https://github.com/FossilizedProgrammer/npv-go/releases) آرشیو
+آماده را بردارید؛ گیتهاب خودش هر دو معماری را می‌سازد:
+
+- `npv-linux-amd64.tar.gz`
+- `npv-windows-amd64.zip`
+
+```bash
+tar -xzf npv-linux-amd64.tar.gz
+./npv-linux-amd64/npv connect example.npvs
+```
+
 ## ساخت
 
 ```bash
 go build -o npv ./cmd/npv-go
 ```
+
+بیلد فقط Go می‌خواهد: CGO لازم ندارد و همه‌ی فایل‌های جدول، لینک‌های کانفیگ و
+موتور xray-core داخل خود باینری‌اند. پوشه‌ی `dist/` و باینری‌های ساخته‌شده در
+`.gitignore` هستند.
 
 ## استفاده
 
