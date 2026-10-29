@@ -25,6 +25,7 @@ const usage = `npv-go - use NPV Tunnel (.npvs) exports as a local proxy
   npv-go serve   [-s N] [-socks addr] [-http addr] [-log level] <file>
   npv-go config  [-s N]             [-pass p] <file>
   npv-go decode  [-o out]           [-pass p] <file>
+  npv-go -version
 
 Pass flags before the file name. -s picks a config by its 1-based number or by
 a substring of its remark; run "list" first to see them.
@@ -46,10 +47,19 @@ type globals struct {
 	loglevel string
 }
 
+// version is stamped by the release workflow through ldflags; a local build
+// reports "dev", which the GUI treats as an unknown version.
+var version = "dev"
+
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Print(usage)
 		os.Exit(2)
+	}
+
+	if os.Args[1] == "-version" || os.Args[1] == "--version" || os.Args[1] == "version" {
+		fmt.Println("npv-go " + version)
+		return
 	}
 
 	var g globals

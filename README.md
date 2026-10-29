@@ -46,6 +46,7 @@ go build -o npv ./cmd/npv-go
 ./npv serve -s 5 -socks 127.0.0.1:1080 -http "" -log error example.npvs
 ./npv config -s 5    example.npvs                       # JSON تولیدشده برای xray را چاپ می‌کند
 ./npv decode  -o links.txt example.npvs                 # فقط لینک‌های رمزگشایی‌شده
+./npv -version                                          # نسخهٔ بیلد (رلیزهای GitHub عدد را stamp می‌کنند)
 ```
 
 مثال کامل، با یک فایل واقعی:

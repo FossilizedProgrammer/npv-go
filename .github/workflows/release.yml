@@ -1,7 +1,7 @@
 name: release
 
-# با زدن تگ v* یک رلیز منتشر می‌شود؛ workflow_dispatch فقط بیلد را آزمود
-# و چیزی منتشر نمی‌کند.
+# Pushing a v* tag publishes a release; workflow_dispatch only verifies the
+# build and publishes nothing.
 
 on:
   push:
@@ -53,10 +53,14 @@ jobs:
         run: |
           pkg="npv-${{ matrix.goos }}-${{ matrix.goarch }}"
           mkdir -p "stage/$pkg" dist
+          # Stamp the version into the binary so a GUI can read it back.
+          ver="$GITHUB_REF_NAME"
+          case "$ver" in v*) ver="${ver#v}" ;; esac
           GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} \
-            go build -trimpath -ldflags '-s -w' \
+            go build -trimpath -ldflags "-s -w -X main.version=$ver" \
             -o "stage/$pkg/npv${{ matrix.ext }}" ./cmd/npv-go
           cp LICENSE README.md "stage/$pkg/"
+          "./stage/$pkg/npv${{ matrix.ext }}" -version || true
 
       - name: Smoke test the linux binary
         if: matrix.goos == 'linux'
@@ -123,7 +127,7 @@ jobs:
       - name: Publish
         env:
           GH_TOKEN: ${{ github.token }}
-          # این job مخزن را checkout نکرده، پس gh مخزن را از remote پیدا نمی‌کند.
+          # This job never checks out the repo, so gh cannot infer it from a remote.
           GH_REPO: ${{ github.repository }}
         run: |
           gh release create "$GITHUB_REF_NAME" artifacts/* \
